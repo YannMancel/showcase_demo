@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerState, ConsumerStatefulWidget, ConsumerWidget, WidgetRef;
 import 'package:showcase_demo/_features.dart';
-import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget;
 
 /// In this page, we directly want to show the tutorial when it is possible.
 /// The [TutorialWidget] widget is displayed only one time.
@@ -48,7 +47,7 @@ class _VisibilityViewState extends ConsumerState<VisibilityView> {
     if (await ref.read(visibilityLogicRef).canDisplayTutorial()) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
-          ShowCaseWidget.of(_tutorialContext)?.startShowCase(_tutorialKeys);
+          TutorialWrapper.showTutorial(_tutorialContext, keys: _tutorialKeys);
         });
       });
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:showcase_demo/_features.dart';
-import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget;
 
 /// In this page, we want to show the tutorial with click on info [Icon].
 /// The [TutorialWidget] widgets are displayed at each time.
@@ -40,7 +39,7 @@ class _HomeViewState extends State<_HomeView> {
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey, _twoKey];
 
   void _showTutorial() {
-    ShowCaseWidget.of(_tutorialContext)?.startShowCase(_tutorialKeys);
+    TutorialWrapper.showTutorial(_tutorialContext, keys: _tutorialKeys);
   }
 
   void _incrementCounter() => setState(() => _counter++);
