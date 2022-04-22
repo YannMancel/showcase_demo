@@ -15,3 +15,8 @@ final settingsLogicRef = Provider<TutorialLogicInterface>(
   (ref) => SettingsLogic(reader: ref.read),
   name: 'settingsLogicRef',
 );
+
+final visibilityLogicRef = Provider<TutorialLogicInterface>(
+  (ref) => VisibilityLogic(reader: ref.read),
+  name: 'visibilityLogicRef',
+);

@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart'
 import 'package:showcase_demo/_features.dart';
 import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
 
-const kVisibilityKey = 'visibility_key';
-
 class VisibilityPage extends ConsumerWidget {
   const VisibilityPage({Key? key}) : super(key: key);
 
@@ -17,7 +15,9 @@ class VisibilityPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TutorialWrapper(
       builder: (_) => VisibilityView(tutorialContext: _),
-      onFinish: () {},
+      onFinish: () async {
+        await ref.read(visibilityLogicRef).makeTutorialUnavailable();
+      },
     );
   }
 }
@@ -40,9 +40,8 @@ class _VisibilityViewState extends ConsumerState<VisibilityView> {
   BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey];
 
-  Future<void> _checkTutorial() async {
-    final keys = await _readKeysFromJson();
-    if (keys.isNotEmpty) {
+  Future<void> _checkDisplayingOfTutorial() async {
+    if (await ref.read(visibilityLogicRef).canDisplayTutorial()) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
           ShowCaseWidget.of(_tutorialContext)?.startShowCase(_tutorialKeys);
@@ -51,16 +50,14 @@ class _VisibilityViewState extends ConsumerState<VisibilityView> {
     }
   }
 
-  Future<List<String>> _readKeysFromJson() => ref.read(jsonRef).readFromJson();
-
-  Future<void> _resetStorage() async {
-    await ref.read(storageRef).remove(key: kVisibilityKey);
+  Future<void> _clearTutorialCache() async {
+    await ref.read(visibilityLogicRef).clearTutorialCache();
   }
 
   @override
   void initState() {
     super.initState();
-    _checkTutorial();
+    _checkDisplayingOfTutorial();
   }
 
   @override
@@ -70,7 +67,7 @@ class _VisibilityViewState extends ConsumerState<VisibilityView> {
         title: const Text('Visibility (json + storage)'),
         actions: <Widget>[
           IconButton(
-            onPressed: _resetStorage,
+            onPressed: _clearTutorialCache,
             icon: const Icon(Icons.restore),
           ),
         ],
