@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart'
 import 'package:showcase_demo/_features.dart';
 import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
 
-const kSettingKey = 'settings_key';
-
 /// In this page, we directly want to show the tutorial when it is possible.
 /// The [Showcase] widget is displayed only one time.
 /// The restore [Icon] allows to clear the key in storage to show again
@@ -17,18 +15,12 @@ class SettingsPage extends ConsumerWidget {
     return MaterialPageRoute(builder: (_) => const SettingsPage());
   }
 
-  Future<void> _writeToStorage(WidgetRef ref) {
-    return ref
-        .read(storageRef)
-        .writeString(key: kSettingKey, value: "completed");
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TutorialWrapper(
       builder: (_) => _SettingsView(tutorialContext: _),
       onFinish: () async {
-        await _writeToStorage(ref);
+        await ref.read(settingsLogicRef).makeTutorialUnavailable();
       },
     );
   }
@@ -52,9 +44,8 @@ class _SettingsViewState extends ConsumerState<_SettingsView> {
   BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey];
 
-  Future<void> _checkTutorial() async {
-    final value = await _readFromStorage();
-    if (value == null) {
+  Future<void> _checkDisplayingOfTutorial() async {
+    if (await ref.read(settingsLogicRef).canDisplayTutorial()) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
           ShowCaseWidget.of(_tutorialContext)?.startShowCase(_tutorialKeys);
@@ -63,18 +54,14 @@ class _SettingsViewState extends ConsumerState<_SettingsView> {
     }
   }
 
-  Future<String?> _readFromStorage() async {
-    return ref.read(storageRef).readString(key: kSettingKey);
-  }
-
-  Future<void> _clearStorage() async {
-    await ref.read(storageRef).remove(key: kSettingKey);
+  Future<void> _clearTutorialCache() async {
+    await ref.read(settingsLogicRef).clearTutorialCache();
   }
 
   @override
   void initState() {
     super.initState();
-    _checkTutorial();
+    _checkDisplayingOfTutorial();
   }
 
   @override
@@ -84,7 +71,7 @@ class _SettingsViewState extends ConsumerState<_SettingsView> {
         title: const Text('Settings (storage)'),
         actions: <Widget>[
           IconButton(
-            onPressed: _clearStorage,
+            onPressed: _clearTutorialCache,
             icon: const Icon(Icons.restore),
           ),
         ],

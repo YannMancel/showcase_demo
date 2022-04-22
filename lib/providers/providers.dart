@@ -10,3 +10,8 @@ final jsonRef = Provider<JsonInterface>(
   (_) => const JsonFromAssets(),
   name: 'jsonRef',
 );
+
+final settingsLogicRef = Provider<TutorialLogicInterface>(
+  (ref) => SettingsLogic(reader: ref.read),
+  name: 'settingsLogicRef',
+);
