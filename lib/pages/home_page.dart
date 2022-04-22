@@ -45,7 +45,11 @@ class _HomeViewState extends State<_HomeView> {
 
   void _incrementCounter() => setState(() => _counter++);
 
-  void _pushToSettings() => Navigator.push(context, SettingPage.route<void>());
+  void _pushToSettings() => Navigator.push(context, SettingsPage.route<void>());
+
+  void _pushToVisibility() {
+    Navigator.push(context, VisibilityPage.route<void>());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +64,10 @@ class _HomeViewState extends State<_HomeView> {
           IconButton(
             onPressed: _pushToSettings,
             icon: const Icon(Icons.settings),
+          ),
+          IconButton(
+            onPressed: _pushToVisibility,
+            icon: const Icon(Icons.visibility),
           ),
         ],
       ),
