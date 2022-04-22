@@ -17,7 +17,7 @@ class VisibilityPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TutorialWrapper(
-      builder: (_) => VisibilityView(tutorialContext: _),
+      builder: (_) => const VisibilityView(),
       onFinish: () async {
         await ref.read(visibilityLogicRef).makeTutorialUnavailable();
       },
@@ -26,12 +26,7 @@ class VisibilityPage extends ConsumerWidget {
 }
 
 class VisibilityView extends ConsumerStatefulWidget {
-  const VisibilityView({
-    Key? key,
-    required this.tutorialContext,
-  }) : super(key: key);
-
-  final BuildContext tutorialContext;
+  const VisibilityView({Key? key}) : super(key: key);
 
   @override
   ConsumerState<VisibilityView> createState() => _VisibilityViewState();
@@ -40,14 +35,13 @@ class VisibilityView extends ConsumerStatefulWidget {
 class _VisibilityViewState extends ConsumerState<VisibilityView> {
   final _oneKey = GlobalKey();
 
-  BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey];
 
   Future<void> _checkDisplayingOfTutorial() async {
     if (await ref.read(visibilityLogicRef).canDisplayTutorial()) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
-          TutorialWrapper.showTutorial(_tutorialContext, keys: _tutorialKeys);
+          TutorialWrapper.showTutorial(context, globalKeys: _tutorialKeys);
         });
       });
     }

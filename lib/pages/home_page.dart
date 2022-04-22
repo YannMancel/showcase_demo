@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TutorialWrapper(
-      builder: (_) => _HomeView(title: title, tutorialContext: _),
+      builder: (_) => _HomeView(title: title),
     );
   }
 }
@@ -20,11 +20,9 @@ class _HomeView extends StatefulWidget {
   const _HomeView({
     Key? key,
     required this.title,
-    required this.tutorialContext,
   }) : super(key: key);
 
   final String title;
-  final BuildContext tutorialContext;
 
   @override
   State<_HomeView> createState() => _HomeViewState();
@@ -35,11 +33,10 @@ class _HomeViewState extends State<_HomeView> {
   final _oneKey = GlobalKey();
   final _twoKey = GlobalKey();
 
-  BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey, _twoKey];
 
   void _showTutorial() {
-    TutorialWrapper.showTutorial(_tutorialContext, keys: _tutorialKeys);
+    TutorialWrapper.showTutorial(context, globalKeys: _tutorialKeys);
   }
 
   void _incrementCounter() => setState(() => _counter++);

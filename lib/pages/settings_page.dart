@@ -17,7 +17,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TutorialWrapper(
-      builder: (_) => _SettingsView(tutorialContext: _),
+      builder: (_) => const _SettingsView(),
       onFinish: () async {
         await ref.read(settingsLogicRef).makeTutorialUnavailable();
       },
@@ -26,12 +26,7 @@ class SettingsPage extends ConsumerWidget {
 }
 
 class _SettingsView extends ConsumerStatefulWidget {
-  const _SettingsView({
-    Key? key,
-    required this.tutorialContext,
-  }) : super(key: key);
-
-  final BuildContext tutorialContext;
+  const _SettingsView({Key? key}) : super(key: key);
 
   @override
   ConsumerState<_SettingsView> createState() => _SettingsViewState();
@@ -40,14 +35,13 @@ class _SettingsView extends ConsumerStatefulWidget {
 class _SettingsViewState extends ConsumerState<_SettingsView> {
   final _oneKey = GlobalKey();
 
-  BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey];
 
   Future<void> _checkDisplayingOfTutorial() async {
     if (await ref.read(settingsLogicRef).canDisplayTutorial()) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
-          TutorialWrapper.showTutorial(_tutorialContext, keys: _tutorialKeys);
+          TutorialWrapper.showTutorial(context, globalKeys: _tutorialKeys);
         });
       });
     }

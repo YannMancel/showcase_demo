@@ -13,16 +13,9 @@ class TutorialWrapper extends StatelessWidget {
 
   static void showTutorial(
     BuildContext context, {
-    required List<GlobalKey> keys,
+    required List<GlobalKey> globalKeys,
   }) {
-    try {
-      ShowCaseWidget.of(context)?.startShowCase(keys);
-    } catch (e) {
-      if (e.toString() == 'Exception: Please provide ShowCaseView context') {
-        throw Exception('Please provide TutorialWrapper context');
-      }
-      rethrow;
-    }
+    ShowCaseWidget.of(context)?.startShowCase(globalKeys);
   }
 
   @override
