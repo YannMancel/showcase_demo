@@ -5,6 +5,10 @@ import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
 
 const kSettingKey = 'setting_key';
 
+/// In this page, we directly want to show the tutorial when it is possible.
+/// The [Showcase] widget is displayed only one time.
+/// The restore [Icon] allows to clear the key in storage to show again
+/// the tutorial at the next open.
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
 
