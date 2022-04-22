@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerState, ConsumerStatefulWidget, ConsumerWidget, WidgetRef;
 import 'package:showcase_demo/_features.dart';
 import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
 
@@ -8,26 +10,31 @@ const kSettingKey = 'settings_key';
 /// The [Showcase] widget is displayed only one time.
 /// The restore [Icon] allows to clear the key in storage to show again
 /// the tutorial at the next open.
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   static Route<T> route<T>() {
     return MaterialPageRoute(builder: (_) => const SettingsPage());
   }
 
+  Future<void> _writeToStorage(WidgetRef ref) {
+    return ref
+        .read(storageRef)
+        .writeString(key: kSettingKey, value: "completed");
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return TutorialWrapper(
       builder: (_) => _SettingsView(tutorialContext: _),
       onFinish: () async {
-        await const StorageInterface()
-            .writeString(key: kSettingKey, value: "completed");
+        await _writeToStorage(ref);
       },
     );
   }
 }
 
-class _SettingsView extends StatefulWidget {
+class _SettingsView extends ConsumerStatefulWidget {
   const _SettingsView({
     Key? key,
     required this.tutorialContext,
@@ -36,17 +43,17 @@ class _SettingsView extends StatefulWidget {
   final BuildContext tutorialContext;
 
   @override
-  State<_SettingsView> createState() => _SettingsViewState();
+  ConsumerState<_SettingsView> createState() => _SettingsViewState();
 }
 
-class _SettingsViewState extends State<_SettingsView> {
+class _SettingsViewState extends ConsumerState<_SettingsView> {
   final _oneKey = GlobalKey();
 
   BuildContext get _tutorialContext => widget.tutorialContext;
   List<GlobalKey> get _tutorialKeys => <GlobalKey>[_oneKey];
 
   Future<void> _checkTutorial() async {
-    final value = await const StorageInterface().readString(key: kSettingKey);
+    final value = await _readFromStorage();
     if (value == null) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 400), () {
@@ -56,8 +63,12 @@ class _SettingsViewState extends State<_SettingsView> {
     }
   }
 
-  Future<void> _resetStorage() async {
-    await const StorageInterface().remove(key: kSettingKey);
+  Future<String?> _readFromStorage() async {
+    return ref.read(storageRef).readString(key: kSettingKey);
+  }
+
+  Future<void> _clearStorage() async {
+    await ref.read(storageRef).remove(key: kSettingKey);
   }
 
   @override
@@ -73,7 +84,7 @@ class _SettingsViewState extends State<_SettingsView> {
         title: const Text('Settings (storage)'),
         actions: <Widget>[
           IconButton(
-            onPressed: _resetStorage,
+            onPressed: _clearStorage,
             icon: const Icon(Icons.restore),
           ),
         ],

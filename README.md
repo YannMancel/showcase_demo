@@ -17,6 +17,8 @@
     * [ShowCaseView][2]
 * Storage
     * [shared_preferences][3]
+* State manager
+  * [flutter_riverpod][4]
 
 ## Troubleshooting
 
@@ -26,13 +28,14 @@
     * or connect and select your phone or tablet
 
 ## Useful
-* [Download Android Studio][4]
-* [Create a new virtual device][5]
-* [Enable developer options and debugging][6]
+* [Download Android Studio][5]
+* [Create a new virtual device][6]
+* [Enable developer options and debugging][7]
 
 [1]: https://docs.flutter.dev/development/tools/sdk/releases
 [2]: https://pub.dev/packages/showcaseview
 [3]: https://pub.dev/packages/shared_preferences
-[4]: https://developer.android.com/studio
-[5]: https://developer.android.com/studio/run/managing-avds.html
-[6]: https://developer.android.com/studio/debug/dev-options.html#enable
+[4]: https://pub.dev/packages/flutter_riverpod
+[5]: https://developer.android.com/studio
+[6]: https://developer.android.com/studio/run/managing-avds.html
+[7]: https://developer.android.com/studio/debug/dev-options.html#enable
