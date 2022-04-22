@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerState, ConsumerStatefulWidget, ConsumerWidget, WidgetRef;
 import 'package:showcase_demo/_features.dart';
-import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
+import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget;
 
 /// In this page, we directly want to show the tutorial when it is possible.
-/// The [Showcase] widget is displayed only one time.
+/// The [TutorialWidget] widget is displayed only one time.
 /// The restore [Icon] allows to clear the key in storage to show again
 /// the tutorial at the next open.
 class SettingsPage extends ConsumerWidget {
@@ -77,12 +77,10 @@ class _SettingsViewState extends ConsumerState<_SettingsView> {
         ],
       ),
       body: Center(
-        child: Showcase(
-          key: _oneKey,
+        child: TutorialWidget(
+          globalKey: _oneKey,
           description: 'This is the fake status',
           showcaseBackgroundColor: Colors.yellow,
-          textColor: Colors.black,
-          overlayPadding: const EdgeInsets.all(8),
           child: Container(
             width: 200.0,
             height: 200.0,

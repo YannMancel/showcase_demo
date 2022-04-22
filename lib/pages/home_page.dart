@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:showcase_demo/_features.dart';
-import 'package:showcaseview/showcaseview.dart' show Showcase, ShowCaseWidget;
+import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget;
 
 /// In this page, we want to show the tutorial with click on info [Icon].
-/// The [Showcase] widgets are displayed at each time.
+/// The [TutorialWidget] widgets are displayed at each time.
 class HomePage extends StatelessWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
 
@@ -72,12 +72,11 @@ class _HomeViewState extends State<_HomeView> {
         ],
       ),
       body: Center(
-        child: Showcase(
-          key: _oneKey,
+        child: TutorialWidget(
+          globalKey: _oneKey,
           description: 'Score area',
           showcaseBackgroundColor: Colors.blue,
           textColor: Colors.white,
-          overlayPadding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -91,13 +90,12 @@ class _HomeViewState extends State<_HomeView> {
           ),
         ),
       ),
-      floatingActionButton: Showcase(
-        key: _twoKey,
+      floatingActionButton: TutorialWidget(
+        globalKey: _twoKey,
         description: 'Click here to increment score',
         shapeBorder: const CircleBorder(),
         showcaseBackgroundColor: Colors.red,
         textColor: Colors.white,
-        overlayPadding: const EdgeInsets.all(8),
         child: FloatingActionButton(
           onPressed: _incrementCounter,
           tooltip: 'Increment',
