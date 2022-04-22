@@ -5,3 +5,8 @@ final storageRef = Provider<StorageInterface>(
   (_) => const LocalStorageBySharedPreferences(),
   name: 'storageRef',
 );
+
+final jsonRef = Provider<JsonInterface>(
+  (_) => const JsonFromAssets(),
+  name: 'jsonRef',
+);
