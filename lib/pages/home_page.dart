@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:showcase_demo/setting_page.dart';
-import 'package:showcase_demo/tutorial_wrapper.dart';
+import 'package:showcase_demo/_features.dart';
 import 'package:showcaseview/showcaseview.dart' show Showcase, ShowCaseWidget;
 
 /// In this page, we want to show the tutorial with click on info [Icon].

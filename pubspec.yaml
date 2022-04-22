@@ -20,7 +20,7 @@ dev_dependencies:
   flutter_lints: ^1.0.4
 
 flutter_gen:
-  output: lib/assets/
+  output: lib/core/
 
 flutter:
   uses-material-design: true

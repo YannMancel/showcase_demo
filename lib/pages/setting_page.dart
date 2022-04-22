@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:showcase_demo/storage.dart';
-import 'package:showcase_demo/tutorial_wrapper.dart';
+import 'package:showcase_demo/_features.dart';
 import 'package:showcaseview/showcaseview.dart' show ShowCaseWidget, Showcase;
 
 const kSettingKey = 'setting_key';
